@@ -459,6 +459,15 @@ textarea.input{resize:vertical;min-height:72px}
 .share-card .k{color:#fff1c7;opacity:1}
 .share-card li .ic{color:#fff1c7}
 h1[data-focus]:focus{outline:none}
+.share-card .tile-row{opacity:.15;width:110px;height:110px}
+.house-banner{margin-top:18px;border-radius:22px;padding:18px 20px;color:#fff}
+.house-banner .k{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.9}
+.house-banner h2{font-size:34px;line-height:1.05;margin:6px 0 6px;color:#fff}
+.house-banner p{font-size:14px;opacity:.95}
+.mates-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px}
+.mates-list li{display:flex;flex-direction:column;gap:2px;border:1px solid var(--line);border-radius:14px;padding:9px 12px;background:var(--surface)}
+.mates-list li b{font-size:14.5px}
+.mates-list li span{font-size:12.5px;color:var(--ink-2)}
 .role{display:none}
 </style>
 
@@ -630,7 +639,7 @@ const HOUSE_VIBE = {
   r6:{dishes:"left",sunday:"right",guests:"left",quiet:"left",food:"right",temp:"left"}
 };
 const VIBE_LABEL = {
-  dishes:{right:"dishes done the same night", left:"relaxed about dishes"},
+  dishes:{right:"dishes tonight, not tomorrow", left:"relaxed about dishes"},
   sunday:{right:"outdoorsy weekends", left:"lazy Sunday brunches"},
   guests:{right:"friends over on weeknights", left:"quiet weeknights"},
   quiet:{right:"quiet after 11pm", left:"late nights"},
@@ -654,6 +663,8 @@ const CANDS = [
    habits:["Weekend hikes","Shared groceries","Warm and cosy"], fit:73, votes:[false,true], reveal:{name:"Mariana", age:27, from:"Brazil"}}
 ];
 const NAMES = ["Marta","Tiago","Ana"];
+const HOUSE_NAMES = {r1:["Marta","Tiago","Ana"], r2:["Inês","Lukas","Sara"], r3:["Chloé","Diogo","Mia"], r5:["Pedro","Hannah","Leo"], r6:["Clara","Matteo","Duarte"]};
+const HOUSE_TAG = {"Arroios":{e:"🧡",c:"#e5574b"}, "Alvalade":{e:"💚",c:"#2A8562"}, "Graça":{e:"💛",c:"#B8860B"}, "Avenidas Novas":{e:"💙",c:"#1E6BFF"}, "Benfica":{e:"💜",c:"#7A4FB5"}, "Campo de Ourique":{e:"🤍",c:"#5b6b8c"}};
 
 const SLOTS = ["Thu 22 Oct, 18:30","Fri 23 Oct, 19:00","Sat 24 Oct, 11:00","Mon 26 Oct, 18:00"];
 const REPLIES = ["Ha, welcome to the house chat. Bring good playlists.","Noted! Ask us anything about the neighbourhood.","Perfect, see you then!"];
@@ -884,12 +895,16 @@ function rankHouses(){
 }
 R.result = () => {
   const v=vibeType(), rk=rankHouses(), best=rk[0];
-  const bestBox = '<div class="section"><h3>Your best house match</h3>'+
-    '<div class="row" style="cursor:default"><span class="thumb">'+roomArt(best.r.art)+'</span><span class="info"><b>'+best.r.title+'</b><span class="line">'+best.r.area+' · '+EUR+best.r.price+'/month</span><span class="price">'+best.ch.pct+'% House Chemistry</span></span></div>'+
+  const t=HOUSE_TAG[best.r.area]||{e:"🏠",c:"#5b6b8c"};
+  const names=HOUSE_NAMES[best.r.id]||NAMES;
+  const mates=best.r.mates.map((m,i)=>'<li><b>'+(names[i]||"Flatmate")+'</b><span>'+m.join(" · ")+'</span></li>').join("");
+  const bestBox = '<div class="house-banner" style="background:'+t.c+'"><span class="k">Your house</span><h2>'+t.e+' '+best.r.area+'</h2>'+
+    '<p>'+best.r.title+'<br>'+EUR+best.r.price+'/month · <b>'+best.ch.pct+'% House Chemistry</b></p></div>'+
+    '<div class="note sun" style="margin-top:12px">'+I.users+'<span><b>Find your housemates!</b> Everyone in class who got <b>'+t.e+' '+best.r.area+'</b> lives with you. When we ask, raise your hand and look around.</span></div>'+
+    '<div class="section"><h3>Already living there</h3><ul class="mates-list">'+mates+'</ul>'+
     '<p class="small" style="margin-top:8px"><b>You share:</b> '+andList(best.ch.share)+'. <b>You differ:</b> '+best.ch.differ.join(", ")+'.</p>'+
-    '<div class="note sun" style="margin-top:10px">'+I.users+'<span>When we ask, raise your hand for <b>'+v.type+'</b> and for <b>'+best.r.area+'</b>.</span></div>'+
-    '<h3 style="margin-top:14px">Your other matches</h3>'+
-    rk.slice(1,3).map(x=>'<div class="kv"><span>'+x.r.area+', '+EUR+x.r.price+'</span><b>'+x.ch.pct+'%</b></div>').join("")+
+    '<h3 style="margin-top:14px">Other houses you would fit</h3>'+
+    rk.slice(1,3).map(x=>{const u=HOUSE_TAG[x.r.area]||{e:"🏠"};return '<div class="kv"><span>'+u.e+' '+x.r.area+', '+EUR+x.r.price+'</span><b>'+x.ch.pct+'%</b></div>';}).join("")+
     '</div>';
   return hdr("Your Homie type")+
   '<div class="pad">'+
