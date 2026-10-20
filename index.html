@@ -502,7 +502,7 @@ h1[data-focus]:focus{outline:none}
       <button type="button" data-act="jump" data-arg="filters">Preferences <small>3</small></button>
       <button type="button" data-act="jump" data-arg="discover">Swipe rooms <small>4</small></button>
       <button type="button" data-act="jump" data-arg="applications">Applications <small>5</small></button>
-      <button type="button" data-act="jump" data-arg="match">It's a match! and meet up <small>6</small></button>
+      <button type="button" data-act="jump" data-arg="match">Match and meet up <small>6</small></button>
       <button type="button" data-act="jump" data-arg="household">Household view <small>7</small></button>
       <button type="button" data-act="jump" data-arg="relay">Room Relay <small>8</small></button>
     </div>
@@ -780,6 +780,7 @@ function tilePattern(){
 }
 
 /* ---------- vibe result ---------- */
+function andList(a){return a.length>1?a.slice(0,-1).join(", ")+" and "+a[a.length-1]:a.join("");}
 function hasVibe(){return Object.keys(S.vibe).length===VIBES.length;}
 function vibeType(){
   const v=S.vibe;
@@ -791,7 +792,7 @@ function vibeType(){
     v.quiet==="right" ? "Quiet after 11" : "Up late, kettle on",
     v.sunday==="left" ? "Sunday brunch: yes" : "Sunday hikes: yes"
   ];
-  const tagline = owl ? "Happiest with flatmates who don't mind a late kettle." : "Happiest with flatmates who like a calm morning kitchen.";
+  const tagline = owl ? "Happiest with flatmates who enjoy slow, late weekends." : "Happiest with flatmates who like a calm morning kitchen.";
   return {type, traits, tagline};
 }
 
@@ -825,7 +826,7 @@ function stamps(yes,no){return '<div class="stamp yes" aria-hidden="true">'+yes+
 const CHECK_KEYS=[["condition","Condition",I.sparkle],["storage","Storage",I.box],["fridge","Fridge",I.fridge],["kitchen","Kitchen",I.pot],["rules","Rules",I.rules]];
 
 function chemBox(ch){
-  return '<div class="chem"><div class="chem-top"><span>House Chemistry</span><b>'+ch.pct+'%</b></div><div class="bar"><i style="width:'+ch.pct+'%"></i></div><p><b>You share:</b> '+ch.share.join(", ")+'. <b>You differ:</b> '+ch.differ.join(", ")+'.</p>'+
+  return '<div class="chem"><div class="chem-top"><span>House Chemistry</span><b>'+ch.pct+'%</b></div><div class="bar"><i style="width:'+ch.pct+'%"></i></div><p><b>You share:</b> '+andList(ch.share)+'. <b>You differ:</b> '+ch.differ.join(", ")+'.</p>'+
     (ch.live?'<p class="small muted" style="margin-top:4px">Calculated from your Vibe Check and theirs.</p>':'')+'</div>';
 }
 function roomCard(r, top){
@@ -875,7 +876,7 @@ R.vibe = () => {
     '<div class="deck-actions">'+
       '<button type="button" class="act no" data-act="swipe" data-arg="left"><span class="round">'+ic('<path d="M19 12H5M11 6l-6 6 6 6"/>')+'</span>'+q.l+'</button>'+
       '<button type="button" class="act yes" data-act="swipe" data-arg="right"><span class="round">'+ic('<path d="M5 12h14M13 6l6 6-6 6"/>')+'</span>'+q.r+'</button>'+
-    '</div><p class="hint">No right or wrong answers. This builds your housemate type.</p>';
+    '</div><p class="hint">No right or wrong answers. This builds your Homie type.</p>';
 };
 
 function rankHouses(){
@@ -885,7 +886,7 @@ R.result = () => {
   const v=vibeType(), rk=rankHouses(), best=rk[0];
   const bestBox = '<div class="section"><h3>Your best house match</h3>'+
     '<div class="row" style="cursor:default"><span class="thumb">'+roomArt(best.r.art)+'</span><span class="info"><b>'+best.r.title+'</b><span class="line">'+best.r.area+' · '+EUR+best.r.price+'/month</span><span class="price">'+best.ch.pct+'% House Chemistry</span></span></div>'+
-    '<p class="small" style="margin-top:8px"><b>You share:</b> '+best.ch.share.join(", ")+'. <b>You differ:</b> '+best.ch.differ.join(", ")+'.</p>'+
+    '<p class="small" style="margin-top:8px"><b>You share:</b> '+andList(best.ch.share)+'. <b>You differ:</b> '+best.ch.differ.join(", ")+'.</p>'+
     '<div class="note sun" style="margin-top:10px">'+I.users+'<span>When we ask, raise your hand for <b>'+v.type+'</b> and for <b>'+best.r.area+'</b>.</span></div>'+
     '<h3 style="margin-top:14px">Your other matches</h3>'+
     rk.slice(1,3).map(x=>'<div class="kv"><span>'+x.r.area+', '+EUR+x.r.price+'</span><b>'+x.ch.pct+'%</b></div>').join("")+
@@ -990,7 +991,7 @@ R.match = () => { ensureMatch(); const mr=matchRoom(), n=houseNames(mr), shared=
   '<div class="note go" style="margin-top:14px">'+I.shield+'<span><b>Pay only when you move in.</b> Your first month of rent is held by our payment partner and goes to the landlord once you have the keys. The '+APP_NAME+' fee is 10% of the first month, split 50/50 with the household ('+EUR+'27.50 each on a '+EUR+'550 room). Landlords pay nothing. The deposit is arranged with the landlord.</span></div>'+
   '</div>'; };
 
-R.chat = () => { ensureMatch(); const mr=matchRoom(), n=houseNames(mr); return '<div class="hdr"><button type="button" class="back" data-act="go" data-arg="match" aria-label="Back">'+I.back+'</button><h1 tabindex="-1" data-focus style="font-size:19px">'+esc(mr.title)+'</h1><button type="button" class="sq" data-act="go" data-arg="book" aria-label="Book a video call">'+I.video+'</button></div>'+
+R.chat = () => { ensureMatch(); const mr=matchRoom(), n=houseNames(mr); return '<div class="hdr"><button type="button" class="back" data-act="go" data-arg="match" aria-label="Back">'+I.back+'</button><h1 tabindex="-1" data-focus style="font-size:19px">'+esc(mr.title)+'</h1><button type="button" class="sq" data-act="go" data-arg="book" aria-label="Meet up: call or visit">'+I.video+'</button></div>'+
   '<div class="chat-head"><span class="avs">'+SHAPES[0]+SHAPES[1]+SHAPES[2]+'</span><span class="small muted" style="margin-left:8px">'+n.join(", ")+' and you</span></div>'+
   '<div class="chat-wrap" id="chatWrap" role="log" aria-live="polite">'+
   '<div class="msg sys">You matched with this house. Be kind, be yourself.</div>'+
@@ -1303,7 +1304,7 @@ const A = {
   relaySend(){ S.relaySent=true; render(); toast("Sent for approval", "Your landlord gets a request to approve the post."); },
   relayReset(){ S.relaySent=false; render(); },
   photoAdd(){ toast("Photo upload is not part of this prototype"); },
-  plus(){ toast(APP_NAME+" Boost", "4 weeks for '+EUR+'7.99. This is a preview in the prototype."); },
+  plus(){ toast(APP_NAME+" Boost", "4 weeks for "+EUR+"7.99. This is a preview in the prototype."); },
   hhLandlord(){ S.hh.phase="landlord"; render(); },
   hhConfirm(){
     S.hh.phase="confirmed";
