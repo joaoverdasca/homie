@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex"></head><body>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Homie Class Test</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Homie: Vibe Check</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap">
 <style>
@@ -474,7 +474,7 @@ h1[data-focus]:focus{outline:none}
 <header class="topbar">
   <div class="tb-brand">
     <span class="tb-mark" id="tbMark"></span>
-    <span><span data-appname></span> <span class="tb-sub">class test</span></span>
+    <span><span data-appname></span> <span class="tb-sub">prototype</span></span>
   </div>
   <div class="tb-right">
     <div class="role" role="group" aria-label="View the app as">
@@ -526,7 +526,7 @@ h1[data-focus]:focus{outline:none}
     </div>
   </aside>
 </main>
-<footer class="foot">Class test for our Marketing and Innovation presentation. Nothing you answer is saved or sent anywhere. All listings and people are fictional.</footer>
+<footer class="foot">Prototype for our Marketing and Innovation project. Nothing you answer is saved or sent anywhere. All listings and people are fictional.</footer>
 
 <script>
 /* ===== The one place to change the app name ===== */
@@ -868,7 +868,7 @@ R.welcome = () => '<div class="welcome">'+
   '<img class="logo-img" src="'+LOGO+'" alt="Homie logo">'+
   '<h1 tabindex="-1" data-focus>'+APP_NAME+'</h1>'+
   '<p class="slogan">'+SLOGAN+'</p>'+
-  '<p class="lead"><b>Class test, 1 minute.</b> Swipe 6 everyday scenarios, find out what type of Homie you are, and see which of our Lisbon houses you would move into.</p>'+
+  '<p class="lead"><b>About 2 minutes.</b> Swipe 6 everyday scenarios, find out what type of Homie you are, and see which of our Lisbon houses you would move into.</p>'+
   '<div class="welcome-art">'+houseArt()+'</div>'+
   '<div class="ctas"><button type="button" class="btn sun block" data-act="startVibe">Take the Vibe Check '+ic('<path d="M5 12h14M13 6l6 6-6 6"/>')+'</button>'+
   '</div>'+
@@ -900,7 +900,7 @@ R.result = () => {
   const mates=best.r.mates.map((m,i)=>'<li><b>'+(names[i]||"Flatmate")+'</b><span>'+m.join(" · ")+'</span></li>').join("");
   const bestBox = '<div class="house-banner" style="background:'+t.c+'"><span class="k">Your house</span><h2>'+t.e+' '+best.r.area+'</h2>'+
     '<p>'+best.r.title+'<br>'+EUR+best.r.price+'/month · <b>'+best.ch.pct+'% House Chemistry</b></p></div>'+
-    '<div class="note sun" style="margin-top:12px">'+I.users+'<span><b>Find your housemates!</b> Everyone in class who got <b>'+t.e+' '+best.r.area+'</b> lives with you. When we ask, raise your hand and look around.</span></div>'+
+    '<div class="note sun" style="margin-top:12px">'+I.users+'<span><b>Meet your house.</b> These are the flatmates already living in <b>'+t.e+' '+best.r.area+'</b>. In the app, they vote on your application within 48 hours.</span></div>'+
     '<div class="section"><h3>Already living there</h3><ul class="mates-list">'+mates+'</ul>'+
     '<p class="small" style="margin-top:8px"><b>You share:</b> '+andList(best.ch.share)+'. <b>You differ:</b> '+best.ch.differ.join(", ")+'.</p>'+
     '<h3 style="margin-top:14px">Other houses you would fit</h3>'+
